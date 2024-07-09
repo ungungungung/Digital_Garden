@@ -7,12 +7,12 @@ copy CNAME docs
 
 hugo -d docs
 
-set /p ch=是否上传远程仓库? (0/1)
+set /p ch=是否上传远程仓库? (1/0)
 
 if %ch%==1 (
 git add .
 git commit -m 'commit'
-git -u push origin master
+git push -u origin master
 )
 
 pause
