@@ -1,0 +1,25 @@
+# Languages
+#   Create a section for each of your site's languages.
+#   Documentation: https://docs.hugoblox.com/reference/language/
+
+# Default language
+#en:
+#  languageCode: en-us
+  # Uncomment for multi-lingual sites, and move English content into #`en` sub-folder.
+  #contentDir: content/en
+
+# Uncomment the lines below to configure your website in a second language.
+zh:
+  languageCode: zh-Hans
+  contentDir: content/zh
+  title: UNG的数字花园
+  params:
+    description: UNG的数字花园
+  menu:
+    main:
+      - name: 主页
+        url: /
+        weight: 1
+      - name: 文档
+        url: /docs
+        weight: 2
