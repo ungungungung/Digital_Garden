@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AP-AC基本 | UNG的数字花园</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/</link><atom:link href="https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/index.xml" rel="self" type="application/rss+xml"/><description>AP-AC基本</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>zh-Hans</language><image><url>https://ungung.top/media/logo.svg</url><title>AP-AC基本</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/</link></image><item><title>AC热备（负载均衡）</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/ac%E7%83%AD%E5%A4%87%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/ac%E7%83%AD%E5%A4%87%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</guid><description>&lt;h3 id="实验环境">实验环境&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">设备
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> SW1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">网段
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1 和 AC2 (vlan100: 192.168.100.0/24)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP1 和 AP2 (vlan200: 192.168.200.0/24)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> user1 (vlan10: 192.168.10.0/24)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> user2 (vlan20: 192.168.20.0/24)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wifi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssid1: user1 (wpa2: p0-p0-p0-)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssid2: user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">连接情况
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1 --&amp;gt; S1-G0/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC2 --&amp;gt; S1-G0/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP1 --&amp;gt; S1-G0/3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP2 --&amp;gt; S1-G0/4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="实验要求">实验要求&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">热备负载均衡
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> wifi user1 的主设备是AC1, 从设备是AC2, AP组为ap1(AP1)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> wifi user2 的主设备是AC2, 从设备是AC1, AP组为ap2(AP2)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="实验步骤">实验步骤&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># S1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hostname S1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name AC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name AP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.100.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.200.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.10.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.20.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport access vlan 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport access vlan 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport mode trunk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk allowed vlan only 200,10,20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk native vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport mode trunk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk allowed vlan only 200,10,20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk native vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">service dhcp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">option 138 ip 1.1.1.1 2.2.2.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.200.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.200.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.10.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.10.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.20.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.20.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip route 1.1.1.1 255.255.255.255 192.168.100.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip route 2.2.2.2 255.255.255.255 192.168.100.2
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># AC1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hostname AC1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.100.1 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface loopback 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 1.1.1.1 32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip route 0.0.0.0 0.0.0.0 192.168.100.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ac-controller
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">capwap ctrl-ip 1.1.1.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan hot-backup 2.2.2.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">context 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">priority level 7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">context 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan hot-backup enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AP1上线后, 加入ap1组
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config xxxx.xxxx.xxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AP2上线后, 加入ap2组
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config xxxx.xxxx.xxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 1 user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 2 user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 1 10 ap-wlan-id 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 2 20 ap-wlan-id 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlansec 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn ciphers aes enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk set-key ascii p0-p0-p0-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hostname AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.100.2 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface loopback 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 2.2.2.2 32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip route 0.0.0.0 0.0.0.0 192.168.100.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ac-controller
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">capwap ctrl-ip 2.2.2.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan hot-backup 1.1.1.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">context 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">context 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">priority level 7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan hot-backup enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AP1上线后, 加入ap1组
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config xxxx.xxxx.xxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AP2上线后, 加入ap2组
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config xxxx.xxxx.xxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 1 user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 2 user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 1 10 ap-wlan-id 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 2 20 ap-wlan-id 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlansec 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn ciphers aes enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk set-key ascii p0-p0-p0-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>AC热备（主备）</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/ac%E7%83%AD%E5%A4%87%E4%B8%BB%E5%A4%87/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/ac%E7%83%AD%E5%A4%87%E4%B8%BB%E5%A4%87/</guid><description>&lt;h3 id="实验环境">实验环境&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">设备
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> SW1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">网段
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1 and AC2 (vlan100: 192.168.100.0/24)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AP1 and AP2 (vlan200: 192.168.200.0/24)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> user1 (vlan10: 192.168.10.0/24)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> user2 (vlan20: 192.168.20.0/24)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wifi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssid1: user1 (wpa2: p0-p0-p0-)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ssid2: user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">交换机的1、2口依次连接AC1和AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">交换机的3、4、5口依次连接AP1、AP2、AP3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="实验要求">实验要求&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">配置成功后，AC1出现故障，AC2可以代替AC1进行工作
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="命令">命令&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># S1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hostname S1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name AC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name AP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.100.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.200.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.10.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.20.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport access vlan 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport access vlan 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport mode trunk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk allowed vlan only 200,10,20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk native vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport mode trunk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk allowed vlan only 200,10,20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk native vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport mode trunk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk allowed vlan only 200,10,20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk native vlan 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">service dhcp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">option 138 ip 1.1.1.1 2.2.2.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.200.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.200.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.10.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.10.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.20.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.20.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip route 1.1.1.1 255.255.255.255 192.168.100.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip route 2.2.2.2 255.255.255.255 192.168.100.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AC1 (注意：AC1和AC2的配置必须手动配置一样)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hostname AC1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.100.1 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface loopback 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 1.1.1.1 32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip route 0.0.0.0 0.0.0.0 192.168.100.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ac-controller
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">capwap ctrl-ip 1.1.1.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan hot-backup 2.2.2.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">context 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">priority level 7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan hot-backup enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AP上线后，用下面的方式加入ap组
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config xxxx.xxxx.xxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 1 user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 2 user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 1 10 ap-wlan-id 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 2 20 ap-wlan-id 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlansec 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn ciphers aes enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk set-key ascii p0-p0-p0-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AC2 (注意：AC1和AC2的配置必须手动配置一样)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hostname AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.100.2 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface loopback 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 2.2.2.2 32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip route 0.0.0.0 0.0.0.0 192.168.100.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ac-controller
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">capwap ctrl-ip 2.2.2.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan hot-backup 1.1.1.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">context 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">priority level 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan hot-backup enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AP上线后，用下面的方式加入ap组
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config xxxx.xxxx.xxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 1 user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 2 user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 1 10 ap-wlan-id 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 2 20 ap-wlan-id 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlansec 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn ciphers aes enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk set-key ascii p0-p0-p0-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>AP双wifi</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/ap%E5%8F%8Cwifi/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/ap%E5%8F%8Cwifi/</guid><description>&lt;h3 id="实验环境">实验环境&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">AC和两台AP直连
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">AP的vlan为10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">user1的vlan为20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">user2的vlan为30
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">AC通过DHCP的option138下发AC地址
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan10、vlan20、vlan30均通过DHCP分配地址
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">实验的结果就是两个AP发射user1和user2的wifi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="实验要求">实验要求&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">ssid: user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssid: user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">option138下发AC地址
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="命令">命令&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">hostname AC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vlan 30
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.10.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.20.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface vlan 30
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 192.168.30.254 24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface loopback 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip address 1.1.1.1 32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">service dhcp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">option 138 ip 1.1.1.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.10.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.10.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.20.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.20.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip dhcp pool user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">network 192.168.30.0 255.255.255.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">default-route 192.168.30.254
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport mode trunk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk native vlan 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk allowed vlan only 10,20,30
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 0/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport mode trunk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk native vlan 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">switchport trunk allowed vlan only 10,20,30
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 1 user1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config 2 user2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group two_ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 1 20 ap-wlan-id 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping 2 30 ap-wlan-id 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># ap上线后，更改ap名称
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config xxxx.xxxx.xxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-name ap1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group two_ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config xxxx.xxxx.xxxx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-name ap2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-group two_ap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>VAC</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/vac/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/vac/</guid><description>&lt;h3 id="实验环境">实验环境&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">设备
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">连接情况
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1_G0/1 &amp;lt;--&amp;gt; AC_G0/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1_G0/2 &amp;lt;--&amp;gt; AC_G0/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> AC1_G0/3 &amp;lt;--&amp;gt; AC_G0/3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="实验要求">实验要求&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">1、AC1和AC2虚拟化为一台AC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">2、VAC的心跳链路为AC1和AC2的G0/1、G0/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">3、配置基于BFD的双主机链路检测，BFD链路为AC1和AC2的G0/3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="实验步骤">实验步骤&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># AC1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hostname AC1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">virtual-ac domain 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">device 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">device 1 priority 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vac-port
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port-member interface GigabitEthernet 0/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port-member interface GigabitEthernet 0/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">device convert mode virtual
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">y
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hostname AC2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">virtual-ac domain 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">device 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">device 2 priority 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vac-port
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port-member interface GigabitEthernet 0/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">port-member interface GigabitEthernet 0/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">device convert mode virtual
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">y
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">y
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># AC1 (等待两个设备重启后)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 1/0/3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">no switchport
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface gigabitEthernet 2/0/3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">no switchport
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">virtual-ac domain 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dual-active detection bfd
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dual-active bfd interface gigabitEthernet 1/0/3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dual-active bfd interface gigabitEthernet 2/0/3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># 查看命令
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show virtual-ac ?
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show virtual-ac link
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show virtual-ac config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show virtual-ac topology
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show virtual-ac dual-active summary
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show virtual-ac dual-active bfd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>命令汇总</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%8B%86%E5%88%86%E9%A2%98%E7%9B%AE/ap-ac%E5%9F%BA%E6%9C%AC/%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</guid><description>&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># 显示AP上线情况
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show ap-config summary
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 进入AP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap-config AP3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 进入AP后配置AP名称
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">AC1(config-ap)#ap-name AP1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlan-config wlan_id ssid_name
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">interface-mapping wlan_id vlan_id
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># AP加入AP组
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Ruijie(config-ap)#ap-group ap_group_name
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 本地转发和集中转发
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tunnel 8023
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># ac指定ap恢复出厂设置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ac-controller
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">factory-reset ap_name
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># console线进入ap恢复出厂设置
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ap(config)#apm factory-reset
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 配置wifi密码(WPA2)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wlansec wlan_id
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn ciphers aes enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk enable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">security rsn akm psk set-key ascii p0-p0-p0-
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 配置capwap隧道地址
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ac-controller
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">capwap ctrl-ip 192.168.1.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 查看AC相关信息
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show ac-config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 查看ap组信息
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show ap-group aps summary
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">show ap-group intf-wlan-map FB
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

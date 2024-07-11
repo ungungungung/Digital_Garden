@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>总结 | UNG的数字花园</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%80%BB%E7%BB%93/</link><atom:link href="https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%80%BB%E7%BB%93/index.xml" rel="self" type="application/rss+xml"/><description>总结</description><generator>Hugo Blox Builder (https://hugoblox.com)</generator><language>zh-Hans</language><image><url>https://ungung.top/media/logo.svg</url><title>总结</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%80%BB%E7%BB%93/</link></image><item><title>命令汇总</title><link>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%80%BB%E7%BB%93/%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://ungung.top/docs/%E6%95%B0%E9%80%9A/%E8%B5%9B%E9%A2%98/2019%E5%B9%B4%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E8%B5%9B%E9%A1%B9%E7%9C%81%E8%B5%9B/%E6%80%BB%E7%BB%93/%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</guid><description>&lt;ul>
+&lt;li>STP 边缘端口
+&lt;ul>
+&lt;li>&lt;code>gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree portfast&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>端口隔离
+&lt;ul>
+&lt;li>&lt;code>gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>switchport protected&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>端口描述
+&lt;ul>
+&lt;li>&lt;code>gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>description string&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>链路聚合
+&lt;ul>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>port-group 1&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/2&lt;/code>&lt;/li>
+&lt;li>&lt;code>port-group 1&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface aggregatePort 1&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>批量创建vlan
+&lt;ul>
+&lt;li>&lt;code>vlan range 1,2,3,4,5,6,7,8,9,10&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>开启rldp防环
+&lt;ul>
+&lt;li>&lt;code>rldp enable&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface range gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>rldp port loop-detect shutdown-port&lt;/code>&lt;/li>
+&lt;li>&lt;code>errdisable recovery interval 300&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>前缀列表匹配NAT流量
+&lt;ul>
+&lt;li>&lt;code>ip nat pool nat_pool prefix-length 24&lt;/code>&lt;/li>
+&lt;li>&lt;code>address interface GigabitEthernet 0/1 match interface GigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip nat inside source list 100 pool nat_pool overload&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip nat inside&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/2&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip nat outside&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>NAT地址池
+&lt;ul>
+&lt;li>&lt;code>ip nat pool interface 20.1.0.1 20.1.0.1 netmask 255.255.255.240&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip nat inside source list 100 pool interface overload&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip nat inside&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/2&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip nat outside&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>EasyNAT (基于接口)
+&lt;ul>
+&lt;li>&lt;code>ip nat inside source list 100 interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>BPDU保护
+&lt;ul>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree bpduguard enable&lt;/code>&lt;/li>
+&lt;li>&lt;code>errdisable recovery interval 300&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>DHCP
+&lt;ul>
+&lt;li>&lt;code>service dhcp&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip dhcp pool pool_name&lt;/code>&lt;/li>
+&lt;li>&lt;code>network 192.168.1.0 255.255.255.0&lt;/code>&lt;/li>
+&lt;li>&lt;code>default-route 192.168.1.254&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>DHCP中继
+&lt;ul>
+&lt;li>&lt;code>service dhcp&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip helper-address 11.1.0.2&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>DHCP snooping
+&lt;ul>
+&lt;li>&lt;code>ip dhcp snooping&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>ip dhcp snooping trust&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>关闭NFPP功能在某个接口的ARP检测功能
+&lt;ul>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>no nfpp arp-guard enable&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>全局设置NFPP日志缓存容量为1024，打印相同log的阈值为300s
+&lt;ul>
+&lt;li>&lt;code>nfpp&lt;/code>&lt;/li>
+&lt;li>&lt;code>log-buffer entries 1024&lt;/code>&lt;/li>
+&lt;li>&lt;code>log-buffer logs 1 interval 300&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>设置CPU保护机制阈值为500pps
+&lt;ul>
+&lt;li>&lt;code>cpu-protect cpu bandwidth 500&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>端口安全 (G0/1只允许PC1的mac地址通过)
+&lt;ul>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>switchport port-security&lt;/code>&lt;/li>
+&lt;li>&lt;code>switchport port-security maximum 1&lt;/code>&lt;/li>
+&lt;li>&lt;code>switchport port-security mac-address xxxx.xxxx.xxxx&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>IPSevVPN
+&lt;ul>
+&lt;li>R1
+&lt;ul>
+&lt;li>&lt;code>ip access-list extended 100&lt;/code>&lt;/li>
+&lt;li>&lt;code>......&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto isakmp policy 10&lt;/code>&lt;/li>
+&lt;li>&lt;code>encryption 3des&lt;/code>&lt;/li>
+&lt;li>&lt;code>authentication pre-share&lt;/code>&lt;/li>
+&lt;li>&lt;code>hash md5&lt;/code>&lt;/li>
+&lt;li>&lt;code>group 2&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto isakmp key 0 123456 address 20.1.0.2&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto ipsec transform-set tran1 esp-3des esp-md5-hmac&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto map mymap 10 ipsec-isakmp&lt;/code>&lt;/li>
+&lt;li>&lt;code>set peer 20.1.0.2&lt;/code>&lt;/li>
+&lt;li>&lt;code>set isakmp-policy 10&lt;/code>&lt;/li>
+&lt;li>&lt;code>set transform-set tran1&lt;/code>&lt;/li>
+&lt;li>&lt;code>match address 100&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto map mymap&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>R2
+&lt;ul>
+&lt;li>&lt;code>ip access-list extended 100&lt;/code>&lt;/li>
+&lt;li>&lt;code>......&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto isakmp policy 10&lt;/code>&lt;/li>
+&lt;li>&lt;code>encryption 3des&lt;/code>&lt;/li>
+&lt;li>&lt;code>authentication pre-share&lt;/code>&lt;/li>
+&lt;li>&lt;code>hash md5&lt;/code>&lt;/li>
+&lt;li>&lt;code>group 2&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto isakmp key 0 123456 address 20.1.0.1&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto ipsec transform-set tran1 esp-3des esp-md5-hmac&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto map mymap 10 ipsec-isakmp&lt;/code>&lt;/li>
+&lt;li>&lt;code>set peer 20.1.0.1&lt;/code>&lt;/li>
+&lt;li>&lt;code>set isakmp-policy 10&lt;/code>&lt;/li>
+&lt;li>&lt;code>set transform-set tran1&lt;/code>&lt;/li>
+&lt;li>&lt;code>match address 100&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>interface gigabitEthernet 0/1&lt;/code>&lt;/li>
+&lt;li>&lt;code>crypto map mymap&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>MSTP
+&lt;ul>
+&lt;li>S1
+&lt;ul>
+&lt;li>&lt;code>spanning-tree&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree mode mstp&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree mst configuration&lt;/code>&lt;/li>
+&lt;li>&lt;code>instance 1 vlan 10,20&lt;/code>&lt;/li>
+&lt;li>&lt;code>instance 2 vlan 10,20&lt;/code>&lt;/li>
+&lt;li>&lt;code>revision 1&lt;/code>&lt;/li>
+&lt;li>&lt;code>name ruijie&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree mst 1 priority 4096&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree mst 2 priority 8192&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>S2
+&lt;ul>
+&lt;li>&lt;code>spanning-tree&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree mode mstp&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree mst configuration&lt;/code>&lt;/li>
+&lt;li>&lt;code>instance 1 vlan 10,20&lt;/code>&lt;/li>
+&lt;li>&lt;code>instance 2 vlan 10,20&lt;/code>&lt;/li>
+&lt;li>&lt;code>revision 1&lt;/code>&lt;/li>
+&lt;li>&lt;code>name ruijie&lt;/code>&lt;/li>
+&lt;li>&lt;code>exit&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree mst 1 priority 4096&lt;/code>&lt;/li>
+&lt;li>&lt;code>spanning-tree mst 2 priority 8192&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>

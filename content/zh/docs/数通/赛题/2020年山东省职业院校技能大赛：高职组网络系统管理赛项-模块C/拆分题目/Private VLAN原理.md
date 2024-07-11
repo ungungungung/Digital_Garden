@@ -1,0 +1,15 @@
+---
+title: Private VLAN原理
+---
+-  作用
+	-  将一个VLAN的二层广播域划分为多个子域
+-  组成
+	-  Private VLAN
+		-  一个主VLAN（Primary VLAN）
+		-  辅助VLAN（Second VLAN）
+			-  一个隔离VLAN（Isolated VLAN）
+				-  VLAN内不能互相通信
+			-  群体VLAN（Community VLAN）
+				-  VLAN间不能互相通信
+-  其他
+	-  混杂端口是主VLAN
